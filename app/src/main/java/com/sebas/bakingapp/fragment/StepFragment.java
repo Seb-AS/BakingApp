@@ -5,15 +5,16 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sebas.bakingapp.R;
-import com.sebas.bakingapp.databinding.FragmentStepBinding;
-import com.sebas.bakingapp.model.Step;
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -21,16 +22,15 @@ import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.sebas.bakingapp.R;
+import com.sebas.bakingapp.databinding.FragmentStepBinding;
+import com.sebas.bakingapp.model.Step;
 
 public class StepFragment extends Fragment implements ExoPlayer.EventListener {
     private final String TAG = StepFragment.class.getSimpleName();
@@ -215,5 +215,12 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener {
         public void onSkipToPrevious() {
             mExoPlayer.seekTo(0);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        releasePlayer();
     }
 }
